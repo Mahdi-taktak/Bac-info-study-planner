@@ -1316,7 +1316,7 @@ document.getElementById('forgotPasswordBtn').addEventListener(
         message.textContent = 'Envoi du lien de récupération...';
 
         const { error } = await sb.auth.resetPasswordForEmail(email, {
-            redirectTo: 'http://localhost:3000'
+            redirectTo: 'https://mahdi-taktak.github.io/Bac-info-study-planner/'
         });
 
         message.textContent = error
