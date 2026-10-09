@@ -74,7 +74,7 @@ let running = false;
 // SAVE
 // ==============================
 
-function save(){
+function save() {
 
     localStorage.setItem(
         'bacSchedule',
@@ -109,17 +109,17 @@ function save(){
 // SECURITY
 // ==============================
 
-function esc(s){
+function esc(s) {
 
     return String(s).replace(
         /[&<>"']/g,
 
         c => ({
-            '&':'&amp;',
-            '<':'&lt;',
-            '>':'&gt;',
-            '"':'&quot;',
-            "'":'&#39;'
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
         }[c])
     );
 
@@ -130,26 +130,26 @@ function esc(s){
 // SUBJECT CLASS
 // ==============================
 
-function classFor(s){
+function classFor(s) {
 
     s = s.toLowerCase();
 
-    if(s.includes('math'))
+    if (s.includes('math'))
         return 'math';
 
-    if(
+    if (
         s.includes('python') ||
         s.includes('algo')
     )
         return 'algo';
 
-    if(
+    if (
         s.includes('sti') ||
         s.includes('technologie')
     )
         return 'sti';
 
-    if(
+    if (
         s.includes('anglais') ||
         s.includes('français') ||
         s.includes('arabe') ||
@@ -158,7 +158,7 @@ function classFor(s){
     )
         return 'lang';
 
-    if(s.includes('sport'))
+    if (s.includes('sport'))
         return 'sport';
 
     return 'other';
@@ -169,7 +169,7 @@ function classFor(s){
 // EMPLOI DU TEMPS
 // ==============================
 
-function renderSchedule(){
+function renderSchedule() {
 
     let h =
         '<thead><tr><th>Heure</th>';
@@ -180,7 +180,7 @@ function renderSchedule(){
 
     h += '</tr></thead><tbody>';
 
-    times.forEach((t,i)=>{
+    times.forEach((t, i) => {
 
         h += `
             <tr>
@@ -189,7 +189,7 @@ function renderSchedule(){
                 </td>
         `;
 
-        days.forEach((d,j)=>{
+        days.forEach((d, j) => {
 
             const key = j + '-' + i;
 
@@ -201,15 +201,14 @@ function renderSchedule(){
                     onclick="editSlot('${key}')"
                     title="Cliquer pour modifier"
                 >
-                    ${
-                        value
-                        ?
-                        `<div class="subject">
+                    ${value
+                    ?
+                    `<div class="subject">
                             ${esc(value)}
                         </div>`
-                        :
-                        '<span style="opacity:.25">＋</span>'
-                    }
+                    :
+                    '<span style="opacity:.25">＋</span>'
+                }
                 </td>
             `;
 
@@ -231,7 +230,7 @@ function renderSchedule(){
 // EDIT SCHEDULE
 // ==============================
 
-function editSlot(key){
+function editSlot(key) {
 
     const old =
         schedule[key] || '';
@@ -242,10 +241,10 @@ function editSlot(key){
             old
         );
 
-    if(value === null)
+    if (value === null)
         return;
 
-    if(value.trim())
+    if (value.trim())
         schedule[key] = value.trim();
 
     else
@@ -261,13 +260,13 @@ function editSlot(key){
 // RESET SCHEDULE
 // ==============================
 
-function resetSchedule(){
+function resetSchedule() {
 
-    if(
+    if (
         confirm(
             'Effacer toutes les cases de ton emploi du temps ?'
         )
-    ){
+    ) {
 
         schedule = {};
 
@@ -282,7 +281,7 @@ function resetSchedule(){
 // TASKS
 // ==============================
 
-function renderTasks(){
+function renderTasks() {
 
     const list =
         tasks.filter(
@@ -296,9 +295,9 @@ function renderTasks(){
     document.getElementById('tasks').innerHTML =
         list.length
 
-        ?
+            ?
 
-        list.map(t => `
+            list.map(t => `
 
             <div class="task ${t.done ? 'done' : ''}">
 
@@ -329,11 +328,10 @@ function renderTasks(){
                         </span>
 
                         <span
-                            class="tag ${
-                                t.priority === 'Haute'
-                                ? 'priority'
-                                : ''
-                            }"
+                            class="tag ${t.priority === 'Haute'
+                    ? 'priority'
+                    : ''
+                }"
                         >
                             ${esc(t.priority)}
                         </span>
@@ -353,9 +351,9 @@ function renderTasks(){
 
         `).join('')
 
-        :
+            :
 
-        `
+            `
             <div class="empty">
                 Aucune tâche dans cette catégorie.
                 Ajoute ta première tâche au-dessus ✨
@@ -408,7 +406,7 @@ document
                     ).value
                 ) || 45,
 
-            done:false
+            done: false
 
         });
 
@@ -427,12 +425,12 @@ document
 // COMPLETE TASK
 // ==============================
 
-function toggleTask(id){
+function toggleTask(id) {
 
     const task =
         tasks.find(t => t.id === id);
 
-    if(task)
+    if (task)
         task.done = !task.done;
 
     save();
@@ -445,7 +443,7 @@ function toggleTask(id){
 // DELETE TASK
 // ==============================
 
-function deleteTask(id){
+function deleteTask(id) {
 
     tasks =
         tasks.filter(
@@ -492,7 +490,7 @@ document
 // STATISTICS
 // ==============================
 
-function updateStats(){
+function updateStats() {
 
     const done =
         tasks.filter(t => t.done).length;
@@ -508,8 +506,8 @@ function updateStats(){
 
     const progress =
         total
-        ? Math.round(done / total * 100)
-        : 0;
+            ? Math.round(done / total * 100)
+            : 0;
 
     document.getElementById(
         'progressStat'
@@ -531,7 +529,7 @@ function updateStats(){
     const today =
         new Date()
             .toISOString()
-            .slice(0,10);
+            .slice(0, 10);
 
     const todayDone =
         tasks.filter(
@@ -552,7 +550,7 @@ function updateStats(){
 // POMODORO
 // ==============================
 
-function updateClock(){
+function updateClock() {
 
     const minutes =
         Math.floor(
@@ -565,16 +563,16 @@ function updateClock(){
     document.getElementById(
         'clock'
     ).textContent =
-        String(minutes).padStart(2,'0')
+        String(minutes).padStart(2, '0')
         + ':' +
-        String(seconds).padStart(2,'0');
+        String(seconds).padStart(2, '0');
 
 }
 
 
-function toggleTimer(){
+function toggleTimer() {
 
-    if(running){
+    if (running) {
 
         clearInterval(timerInterval);
 
@@ -605,7 +603,7 @@ function toggleTimer(){
             updateClock();
 
 
-            if(remaining <= 0){
+            if (remaining <= 0) {
 
                 clearInterval(
                     timerInterval
@@ -613,7 +611,7 @@ function toggleTimer(){
 
                 running = false;
 
-                if(mode === 'focus'){
+                if (mode === 'focus') {
 
                     sessions++;
 
@@ -637,7 +635,7 @@ function toggleTimer(){
                         'PAUSE';
 
                 }
-                else{
+                else {
 
                     mode = 'focus';
 
@@ -665,12 +663,12 @@ function toggleTimer(){
                 updateStats();
             }
 
-        },1000);
+        }, 1000);
 
 }
 
 
-function resetTimer(){
+function resetTimer() {
 
     clearInterval(
         timerInterval
@@ -701,7 +699,7 @@ function resetTimer(){
 }
 
 
-function switchTimer(){
+function switchTimer() {
 
     clearInterval(
         timerInterval
@@ -711,34 +709,34 @@ function switchTimer(){
 
     mode =
         mode === 'focus'
-        ? 'break'
-        : 'focus';
+            ? 'break'
+            : 'focus';
 
     remaining =
         (
             mode === 'focus'
-            ?
-            Number(
-                document.getElementById(
-                    'focusMin'
-                ).value
-            )
-            :
-            Number(
-                document.getElementById(
-                    'breakMin'
-                ).value
-            )
+                ?
+                Number(
+                    document.getElementById(
+                        'focusMin'
+                    ).value
+                )
+                :
+                Number(
+                    document.getElementById(
+                        'breakMin'
+                    ).value
+                )
         ) * 60;
 
     document.getElementById(
         'timerMode'
     ).textContent =
         mode === 'focus'
-        ?
-        'SESSION DE CONCENTRATION'
-        :
-        'PAUSE';
+            ?
+            'SESSION DE CONCENTRATION'
+            :
+            'PAUSE';
 
     document.getElementById(
         'startBtn'
@@ -782,7 +780,7 @@ goalChecks.forEach(check => {
 });
 
 
-function updateGoals(){
+function updateGoals() {
 
     const completed =
         [...goalChecks]
@@ -812,7 +810,7 @@ function updateGoals(){
 // FREE TIME
 // ==============================
 
-function addFun(){
+function addFun() {
 
     const activity =
         document.getElementById(
@@ -828,7 +826,7 @@ function addFun(){
 
     fun.push({
 
-        id:Date.now(),
+        id: Date.now(),
 
         activity,
 
@@ -842,14 +840,14 @@ function addFun(){
 }
 
 
-function renderFun(){
+function renderFun() {
 
     const container =
         document.getElementById(
             'funList'
         );
 
-    if(!fun.length){
+    if (!fun.length) {
 
         container.innerHTML =
             `
@@ -896,7 +894,7 @@ function renderFun(){
 }
 
 
-function deleteFun(id){
+function deleteFun(id) {
 
     fun =
         fun.filter(
@@ -933,7 +931,7 @@ notes.addEventListener(
 // EXPORT
 // ==============================
 
-function exportData(){
+function exportData() {
 
     const data = {
 
@@ -945,11 +943,11 @@ function exportData(){
 
         sessions,
 
-        notes:notes.value,
+        notes: notes.value,
 
         goals:
             [...goalChecks].reduce(
-                (obj,check) => {
+                (obj, check) => {
 
                     obj[check.dataset.goal] =
                         check.checked;
@@ -973,7 +971,7 @@ function exportData(){
                 )
             ],
             {
-                type:'application/json'
+                type: 'application/json'
             }
         );
 
@@ -1005,10 +1003,10 @@ document.getElementById(
     new Date().toLocaleDateString(
         'fr-FR',
         {
-            weekday:'long',
-            year:'numeric',
-            month:'long',
-            day:'numeric'
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
         }
     );
 
@@ -1254,25 +1252,13 @@ document.getElementById('signupBtn').addEventListener(
 
         message.textContent = 'Création du compte...';
 
-const { data, error } = await sb.auth.signUp({
-    email,
-    password,
-    options: {
-        emailRedirectTo:
-            'https://mahdi-taktak.github.io/Bac-info-study-planner/'
-    }
-});
-
-if (error) {
-    message.textContent = 'Erreur : ' + error.message;
-} else if (!data.session) {
-    message.textContent =
-        'Compte créé ! Vérifie ton e-mail pour confirmer ton inscription.';
-} else {
-    message.textContent = 'Compte créé avec succès ✓';
-}
-
-
+        const { data, error } = await sb.auth.signUp({
+            email,
+            password,
+            options: {
+                emailRedirectTo:
+                    'https://mahdi-taktak.github.io/Bac-info-study-planner/'
+            }
         });
 
         if (error) {
