@@ -1254,9 +1254,25 @@ document.getElementById('signupBtn').addEventListener(
 
         message.textContent = 'Création du compte...';
 
-        const { data, error } = await sb.auth.signUp({
-            email,
-            password
+const { data, error } = await sb.auth.signUp({
+    email,
+    password,
+    options: {
+        emailRedirectTo:
+            'https://mahdi-taktak.github.io/Bac-info-study-planner/'
+    }
+});
+
+if (error) {
+    message.textContent = 'Erreur : ' + error.message;
+} else if (!data.session) {
+    message.textContent =
+        'Compte créé ! Vérifie ton e-mail pour confirmer ton inscription.';
+} else {
+    message.textContent = 'Compte créé avec succès ✓';
+}
+
+
         });
 
         if (error) {
